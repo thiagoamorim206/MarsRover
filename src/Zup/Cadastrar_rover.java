@@ -11,14 +11,14 @@ public class Cadastrar_rover extends javax.swing.JFrame {
 
     private int tamanhoX;
     private int tamanhoY;
-    private Rover[][] campo;
+    private Rover[][] planalto;
     private ArrayList<Rover> arrayRover = new ArrayList<>();
 
     public Cadastrar_rover(int x, int y) {
         initComponents();
         this.tamanhoX = x;
         this.tamanhoY = y;
-        campo = new Rover[x + 1][y + 1];
+        planalto = new Rover[x + 1][y + 1];
     }
 
     public Cadastrar_rover() {
@@ -238,7 +238,7 @@ public class Cadastrar_rover extends javax.swing.JFrame {
 
     private void btt_cadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btt_cadastrarActionPerformed
 
-        boolean verifica = true;
+        Rover r = new Rover();
 
         if (getNome().getText().isEmpty() || getText_coordenadaX().getText().isEmpty()
                 || getText_coordenadaY().getText().isEmpty() || getIntrucoes().getText().isEmpty()
@@ -255,51 +255,35 @@ public class Cadastrar_rover extends javax.swing.JFrame {
                 String sentido = getCombo_sentido().getSelectedItem().toString();
                 String instrucoes = getIntrucoes().getText().trim();
 
-                if (coordenadaX <= getTamanhoX() && coordenadaY <= getTamanhoY()) { // verifica se o rover não está sendo inserido forá do planalto
+                if (r.verificaPlanalto(coordenadaX, coordenadaY, getTamanhoX(), getTamanhoY())) { // verifica se o rover não está sendo inserido fora do planalto
 
-                    if (coordenadaX >= 0 && coordenadaY >= 0) {  // verifica se as coordenadas são maiores que zero
+                    String inst = instrucoes.toUpperCase(); // passando as instruções para maiúsculas
 
-                        String inst = instrucoes.toUpperCase(); // passando as instruções para maiúsculas
+                    if (r.verificaInstrucao(inst)) { // controla se as instruções estão corretas 
 
-                        for (int i = 0; i < inst.length(); i++) {  // verifica se as intruções corresponde ao padrão definido 
-                            char c = inst.charAt(i);
-                            if (c != 'M' && c != 'L' && c != 'R') {
-                                JOptionPane.showMessageDialog(null, "As instruções: " + inst + " não corresponde ao padrão!");
-                                verifica = false;
-                                break;
-                            }
-                        }
+                        DefaultTableModel val = (DefaultTableModel) rovers_table.getModel();
+                        val.addRow(new String[]{nome, String.valueOf(coordenadaX), String.valueOf(coordenadaY), sentido, inst});
 
-                        if (verifica) { // controla se as instruções estão corretas 
+                        Rover rover = new Rover(nome, coordenadaX, coordenadaY, sentido, inst);
 
-                            DefaultTableModel val = (DefaultTableModel) rovers_table.getModel();
+                        arrayRover.add(rover); // add no array de rovers
 
-                            val.addRow(new String[]{nome, String.valueOf(coordenadaX), String.valueOf(coordenadaY), sentido, inst});
+                        planalto[coordenadaX][coordenadaY] = rover; // add o rover no planalto
 
-                            Rover rover = new Rover(nome, coordenadaX, coordenadaY, sentido, inst);
+                        getNome().setText("");
+                        getText_coordenadaX().setText("");
+                        getText_coordenadaY().setText("");
+                        getCombo_sentido().setSelectedIndex(0);
+                        getIntrucoes().setText("");
 
-                            arrayRover.add(rover); // add no array de rovers
-
-                            campo[coordenadaX][coordenadaY] = rover; // add o rover no planalto
-
-                            getNome().setText("");
-                            getText_coordenadaX().setText("");
-                            getText_coordenadaY().setText("");
-                            getCombo_sentido().setSelectedIndex(0);
-                            getIntrucoes().setText("");
-
-                            getNome().requestFocus();
-
-                        }
+                        getNome().requestFocus();
 
                     } else {
-
-                        JOptionPane.showMessageDialog(null, "Entre com números maiores que zero!");
-
+                        JOptionPane.showMessageDialog(null, "As instruções: " + inst + " não corresponde ao padrão!");
                     }
 
                 } else {
-                    JOptionPane.showMessageDialog(null, "Coordenada X ou Y está maior do que o campo de navegação! Tamanho do campo atual: " + getTamanhoX() + " x " + getTamanhoY());
+                    JOptionPane.showMessageDialog(null, "Coordenada X ou Y está fora do planalto de navegação! Tamanho do planalto: 0 x 0 até " + getTamanhoX() + " x " + getTamanhoY());
                 }
 
             } catch (NumberFormatException nfe) {
@@ -322,10 +306,10 @@ public class Cadastrar_rover extends javax.swing.JFrame {
 
     private void btt_navegarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btt_navegarActionPerformed
 
-        if (!arrayRover.isEmpty()) {
-            Resultado_rover resultado_rover = new Resultado_rover(arrayRover, campo); // passando o arrayRover e o planalto
+        if (!arrayRover.isEmpty()) { // verifica se tem rover cadastrado
+            Resultado_rover resultado_rover = new Resultado_rover(arrayRover, planalto); // passando o arrayRover e o planalto
             resultado_rover.setVisible(true);
-            resultado_rover.navegar();
+            resultado_rover.navegar(); // rovers navegar
             dispose();
         } else {
             JOptionPane.showMessageDialog(null, "Cadastre pelo menos um rover!");

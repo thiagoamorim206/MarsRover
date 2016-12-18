@@ -6,7 +6,7 @@ public class Rover {
     private int coordenadaX;
     private int coordenadaY;
     private String sentido; //sentido north/south/west/east
-    private String instrucao;
+    private String instrucao; //L - Left, R - Right, M - avançar
 
     public Rover(String nome, int coordenadaX, int coordenadaY, String sentido, String instrucao) {
         this.nome = nome;
@@ -18,7 +18,24 @@ public class Rover {
 
     public Rover() {
     }
-    
+
+    public boolean verificaPlanalto(int coordenadaX, int coordenadaY, int tamanhoX, int tamanhoY) {
+
+        return coordenadaX <= tamanhoX && coordenadaY <= tamanhoY && coordenadaX >= 0 && coordenadaY >= 0;
+
+    }
+
+    public boolean verificaInstrucao(String instrucao) {
+
+        for (int i = 0; i < instrucao.length(); i++) {  // verifica se as intruções corresponde ao padrão definido 
+            char c = instrucao.charAt(i);
+            if (c != 'M' && c != 'L' && c != 'R') {
+                return false;
+            }
+        }
+
+        return true;
+    }
 
     public String GirarEsquerda(String SentidoAtual) {
 

@@ -106,4 +106,77 @@ public class RoverTest {
 
     }
 
+    /**
+     * Test of verificaPlanalto method, of class Rover.
+     */
+    @Test
+    public void testVerificaPlanalto() {
+        Rover r = new Rover();
+        System.out.println("verificaPlanalto");
+        int coordenadaX = 1;
+        int coordenadaY = 2;
+        int tamanhoX = 5;
+        int tamanhoY = 5;
+        boolean expResult = true;
+        boolean result = r.verificaPlanalto(coordenadaX, coordenadaY, tamanhoX, tamanhoY);
+        assertEquals(expResult, result);
+
+    }
+
+    /**
+     * Test of verificaPlanalto method, of class Rover.
+     */
+    @Test
+    public void testVerificaCoordenadasNegativa() {
+        Rover r = new Rover();
+        System.out.println("verificaPlanaltoNegativo");
+        int coordenadaX = -1;
+        int coordenadaY = -2;
+        int tamanhoX = 5;
+        int tamanhoY = 5;
+        boolean expResult = false;
+        boolean result = r.verificaPlanalto(coordenadaX, coordenadaY, tamanhoX, tamanhoY);
+        assertEquals(expResult, result);
+
+    }
+
+    @Test
+    public void testForaDoPlanalto() {
+        Rover r = new Rover();
+        System.out.println("ForaDoPlanalto");
+        int coordenadaX = 6;
+        int coordenadaY = 9;
+        int tamanhoX = 5;
+        int tamanhoY = 5;
+        boolean expResult = false;
+        boolean result = r.verificaPlanalto(coordenadaX, coordenadaY, tamanhoX, tamanhoY);
+        assertEquals(expResult, result);
+
+    }
+
+    /**
+     * Test of verificaInstrucao method, of class Rover.
+     */
+    @Test
+    public void testVerificaInstrucao() {
+        Rover r = new Rover();
+        System.out.println("verificaInstrucao");
+        String instrucao = "LMLMLMLMM";
+        boolean expResult = true;
+        boolean result = r.verificaInstrucao(instrucao);
+        assertEquals(expResult, result);
+
+    }
+
+    @Test
+    public void testVerificaInstrucaoForaPadrao() {
+        Rover r = new Rover();
+        System.out.println("verificaInstrucaoForaPadrao");
+        String instrucao = "LMLMMRXYZ";
+        boolean expResult = false;
+        boolean result = r.verificaInstrucao(instrucao);
+        assertEquals(expResult, result);
+
+    }
+
 }

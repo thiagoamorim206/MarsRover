@@ -6,15 +6,15 @@ import javax.swing.table.DefaultTableModel;
 public class Resultado_rover extends javax.swing.JFrame {
 
     private ArrayList<Rover> rover_resutado = new ArrayList<>();
-    private Rover[][] campo_resultado;
+    private Rover[][] planalto_resultado;
 
-    public Resultado_rover(ArrayList<Rover> rover, Rover[][] campo) {
+    public Resultado_rover(ArrayList<Rover> rover, Rover[][] planalto) {
         initComponents();
         this.rover_resutado = rover;
-        this.campo_resultado = campo;
+        this.planalto_resultado = planalto;
     }
 
-    public void navegar() {
+    public void navegar() { //mover rovers pelo planalto
         String msg = "Sucesso";
 
         for (Rover rover_atual : rover_resutado) { // percorrer os rovers
@@ -36,32 +36,32 @@ public class Resultado_rover extends javax.swing.JFrame {
                     case 'M': //avançar uma posição no planalto
                         try {
 
-                            switch (rover_atual.getSentido()) {
+                            switch (rover_atual.getSentido()) { // sentido atual do rover no planalto
                                 case "N":
-                                    campo_resultado[rover_atual.getCoordenadaX()][rover_atual.getCoordenadaY()] = null; // apagando o rover da posição anterior
-                                    campo_resultado[rover_atual.getCoordenadaX()][rover_atual.getCoordenadaY() + 1] = rover_atual;
+                                    planalto_resultado[rover_atual.getCoordenadaX()][rover_atual.getCoordenadaY()] = null; // apagando o rover da posição antiga
+                                    planalto_resultado[rover_atual.getCoordenadaX()][rover_atual.getCoordenadaY() + 1] = rover_atual; // movendo o rover
                                     rover_atual.setCoordenadaY(rover_atual.getCoordenadaY() + 1); //atualizar rover para a nova posição
                                     break;
                                 case "S":
-                                    campo_resultado[rover_atual.getCoordenadaX()][rover_atual.getCoordenadaY()] = null;
-                                    campo_resultado[rover_atual.getCoordenadaX()][rover_atual.getCoordenadaY() - 1] = rover_atual;
+                                    planalto_resultado[rover_atual.getCoordenadaX()][rover_atual.getCoordenadaY()] = null;
+                                    planalto_resultado[rover_atual.getCoordenadaX()][rover_atual.getCoordenadaY() - 1] = rover_atual;
                                     rover_atual.setCoordenadaY(rover_atual.getCoordenadaY() - 1); //atualizar rover para a nova posição
                                     break;
                                 case "W":
-                                    campo_resultado[rover_atual.getCoordenadaX()][rover_atual.getCoordenadaY()] = null;
-                                    campo_resultado[rover_atual.getCoordenadaX() - 1][rover_atual.getCoordenadaY()] = rover_atual;
+                                    planalto_resultado[rover_atual.getCoordenadaX()][rover_atual.getCoordenadaY()] = null;
+                                    planalto_resultado[rover_atual.getCoordenadaX() - 1][rover_atual.getCoordenadaY()] = rover_atual;
                                     rover_atual.setCoordenadaX(rover_atual.getCoordenadaX() - 1); //atualizar rover para a nova posição
                                     break;
                                 default:
-                                    campo_resultado[rover_atual.getCoordenadaX()][rover_atual.getCoordenadaY()] = null;
-                                    campo_resultado[rover_atual.getCoordenadaX() + 1][rover_atual.getCoordenadaY()] = rover_atual;
+                                    planalto_resultado[rover_atual.getCoordenadaX()][rover_atual.getCoordenadaY()] = null;
+                                    planalto_resultado[rover_atual.getCoordenadaX() + 1][rover_atual.getCoordenadaY()] = rover_atual;
                                     rover_atual.setCoordenadaX(rover_atual.getCoordenadaX() + 1); //atualizar rover para a nova posição
                                     break;
                             }
 
                         } catch (Exception e) {
                             msg = "Erro - Rover parou pois sairia fora da área do planalto!";
-                            campo_resultado[rover_atual.getCoordenadaX()][rover_atual.getCoordenadaY()] = rover_atual; // onde ele parou antes de tentar sair do planalto
+                            planalto_resultado[rover_atual.getCoordenadaX()][rover_atual.getCoordenadaY()] = rover_atual; // onde ele parou antes de tentar sair do planalto
                         }
 
                         break;
