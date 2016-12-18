@@ -14,4 +14,4 @@ Na tela inicial será informado o tamanho do planalto.
 
 Na tela seguinte irá cadastrar os rovers com as configurações iniciais e as instruções de navegação.
 
-Após o cadastrado basta clicar em navegar para exibir os resultados dos rovers que foram cadastrados.
+Após o cadastro basta clicar em navegar para exibir os resultados dos rovers que foram cadastrados.
